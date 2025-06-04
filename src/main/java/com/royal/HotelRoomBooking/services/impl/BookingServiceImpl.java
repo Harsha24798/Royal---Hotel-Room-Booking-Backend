@@ -86,7 +86,6 @@ public class BookingServiceImpl implements BookingService {
         boolean isAvailable = bookingRepository.isRoomAvailable(room.getId(), bookingDTO.getCheckInDate(), bookingDTO.getCheckOutDate());
         if (!isAvailable) {
             throw new InvalidBookingStateAndDateException("Room is not available to be booked");
-
         }
 
         BigDecimal totalPrice = calculateTotalPrice(room, bookingDTO);
