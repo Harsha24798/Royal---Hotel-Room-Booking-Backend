@@ -31,7 +31,9 @@ public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final ModelMapper modelMapper;
 
-    private final static String IMAGE_DIRECTORY = System.getProperty("user.dir") + "/product-image/";
+//    private final static String IMAGE_DIRECTORY = System.getProperty("user.dir") + "/product-image/";
+
+    private final static String IMAGE_DIRECTORY_FRONTEND = "C:/Users/harsh/Desktop/Hotel Booking System/hotel-room-booking/public/rooms/";
 
     @Override
     public Response addRoom(RoomDTO roomDTO, MultipartFile imageFile) {
@@ -173,14 +175,13 @@ public class RoomServiceImpl implements RoomService {
                 .build();
     }
 
-    /** SAVE IMAGES TO BACKEND DIRECTORY*/
     private String saveImage(MultipartFile imageFile){
         if (!imageFile.getContentType().startsWith("image/")){
             throw new IllegalArgumentException("Only Image file is allowed");
         }
 
         ///Create directory if it doen;t exists
-        File directory = new File(IMAGE_DIRECTORY);
+        File directory = new File(IMAGE_DIRECTORY_FRONTEND);
 
         if (!directory.exists()){
             directory.mkdir();
@@ -188,7 +189,7 @@ public class RoomServiceImpl implements RoomService {
 
         //GENERATE UNIWUE FILE NAME FOR THE IMAGE
         String uniqueFileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
-        String imagePath = IMAGE_DIRECTORY + uniqueFileName;
+        String imagePath = IMAGE_DIRECTORY_FRONTEND + uniqueFileName;
 
         try {
             File destinationFile = new File(imagePath);
@@ -198,6 +199,34 @@ public class RoomServiceImpl implements RoomService {
             throw  new IllegalArgumentException(ex.getMessage());
         }
 
-        return imagePath;
+        return "/rooms/"+uniqueFileName;
     }
+
+    /** SAVE IMAGES TO BACKEND DIRECTORY*/
+//    private String saveImage(MultipartFile imageFile){
+//        if (!imageFile.getContentType().startsWith("image/")){
+//            throw new IllegalArgumentException("Only Image file is allowed");
+//        }
+//
+//        ///Create directory if it doen;t exists
+//        File directory = new File(IMAGE_DIRECTORY);
+//
+//        if (!directory.exists()){
+//            directory.mkdir();
+//        }
+//
+//        //GENERATE UNIWUE FILE NAME FOR THE IMAGE
+//        String uniqueFileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+//        String imagePath = IMAGE_DIRECTORY + uniqueFileName;
+//
+//        try {
+//            File destinationFile = new File(imagePath);
+//            imageFile.transferTo(destinationFile);
+//
+//        }catch (Exception ex){
+//            throw  new IllegalArgumentException(ex.getMessage());
+//        }
+//
+//        return imagePath;
+//    }
 }
